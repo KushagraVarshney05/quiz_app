@@ -7,24 +7,43 @@ import "react-toastify/dist/ReactToastify.css";
 import { notify } from "./toast";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-
+  const Navigate = useNavigate();
   const [touched, setTouched] = useState({});
 
   const chaeckData = (obj) => {
-    const { email, password } = obj;
-    const urlApi = `https://lightem.senatorhost.com/login-react/index.php?email=${email.toLowerCase()}&password=${password}`;
+    const urlApi = `http://localhost:5000/api/v1/user/login`;
     const api = axios
-      .get(urlApi)
-      .then((response) => response.data)
-      .then((data) => (data.ok ? notify("You login to your account successfully", "success") : notify("Your password or your email is wrong", "error")));
+      .post(urlApi,obj)
+      .then((response) =>response.data.token)
+      .then((data) => {
+        if(data){
+        notify("You login to your account successfully", "success");
+        localStorage.setItem("token", data);
+        setData({
+          email: "",
+          password: "",
+        });
+        console.log("token",data);
+        setTimeout(() => {
+          Navigate("/home");
+
+        }, 3000);
+
+        }
+        else
+        notify("Your password or your email is wrong", "error")
+      }).catch((error) => {
+        console.log(error);
+        notify("Your password or your email is wrong", "error")
+      });
     toast.promise(api, {
-      pending: "Loading your data...",
       success: false,
       error: "Something went wrong!",
     });

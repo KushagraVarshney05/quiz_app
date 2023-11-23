@@ -4,7 +4,7 @@ export const notify = (text, type) => {
   if (type === "success") {
     toast.success(text, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -14,7 +14,7 @@ export const notify = (text, type) => {
   } else if (type === "warning") {
     toast.warn(text, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -24,7 +24,7 @@ export const notify = (text, type) => {
   } else {
     toast.error(text, {
       position: "top-right",
-      autoClose: 5000,
+      autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
