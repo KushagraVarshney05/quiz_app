@@ -35,10 +35,8 @@ const SignUp = () => {
   const changeHandler = (event) => {
     if (event.target.name === "IsAccepted") {
       setData({ ...data, [event.target.name]: event.target.checked });
-      console.log(data);
     } else {
       setData({ ...data, [event.target.name]: event.target.value });
-      console.log(data);
     }
   };
 
@@ -48,19 +46,12 @@ const SignUp = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    console.log(data);
     axios
       .post("http://localhost:5000/api/v1/user/register", data)
       .then((res) => {
-        console.log(res);
-        if (res.data.token) {
-          notify("You signed Up successfully", "success");
-        } else {
-          notify(
-            "You have already registered, log in to your account",
-            "warning"
-          );
-        }
+
+          notify(res.data.msg, "success");
+        
         setData({
           name: "",
           email: "",

@@ -30,7 +30,6 @@ const Login = () => {
           email: "",
           password: "",
         });
-        console.log("token",data);
         setTimeout(() => {
           Navigate("/home");
 
@@ -41,7 +40,7 @@ const Login = () => {
         notify("Your password or your email is wrong", "error")
       }).catch((error) => {
         console.log(error);
-        notify("Your password or your email is wrong", "error")
+        notify(error.response.data.msg, "error");
       });
     toast.promise(api, {
       success: false,
