@@ -12,12 +12,10 @@ const EmailVerify = () => {
 		const verifyEmailUrl = async () => {
 			try {
 				const url = `http://localhost:5000/email/${token}`;
-                console.log(url);
-				const { data } = await axios.get(url);
-				console.log(data);
+				const { data}= await axios.get(url);
+				
 				setValidUrl(true);
 			} catch (error) {
-				console.log(error);
 				setValidUrl(false);
 			}
 		};
