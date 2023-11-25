@@ -6,6 +6,7 @@ import './index.css';
 import App from './App';
 import Home from './components/Home';
 import EmailVerify from './components/emailVerification';
+import CARD from './components/card.js';
 import { createBrowserRouter, RouterProvider,  } from "react-router-dom";
 const appRouter = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/email/:token",
         element: <EmailVerify/>,
+      },
+      {
+        path: "/card",
+        element: <CARD/>,
       },
 
     ],
