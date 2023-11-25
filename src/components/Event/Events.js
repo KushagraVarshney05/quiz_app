@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Events.css";
+import Logout from "../Logout/Logout";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -28,6 +29,7 @@ const Events = () => {
 
   return (
     <div>
+      <Logout />
       {events?.map((event) => (
         <div key={event?.event_name} className="card">
           <img
