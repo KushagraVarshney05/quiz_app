@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 import userIcon from "../img/user.svg";
 import emailIcon from "../img/email.svg";
 import passwordIcon from "../img/password.svg";
+import departmentIcon from "../img/structure.png";
+import { HiOutlineMail } from "react-icons/hi";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // Validate
 import { validate } from "./validate";
 // Styles
@@ -21,8 +24,11 @@ const SignUp = () => {
     name: "",
     email: "",
     password: "",
-    confirmPassword: "",
-    IsAccepted: false,
+    course: "",
+    department: "",
+    year: "",
+    universityRollno: "",
+    collegeId: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -30,18 +36,14 @@ const SignUp = () => {
 
   useEffect(() => {
     setErrors(validate(data, "signUp"));
-  }, [data, touched]);
+  }, [data]);
 
   const changeHandler = (event) => {
-    if (event.target.name === "IsAccepted") {
-      setData({ ...data, [event.target.name]: event.target.checked });
-    } else {
       setData({ ...data, [event.target.name]: event.target.value });
-    }
   };
 
   const focusHandler = (event) => {
-    setTouched({ ...touched, [event.target.name]: true });
+    // setTouched({ ...touched, [event.target.name]: true });
   };
 
   const submitHandler = (event) => {
@@ -49,15 +51,17 @@ const SignUp = () => {
     axios
       .post("http://localhost:5000/api/v1/user/register", data)
       .then((res) => {
+        notify(res.data.msg, "success");
 
-          notify(res.data.msg, "success");
-        
         setData({
           name: "",
           email: "",
           password: "",
-          confirmPassword: "",
-          IsAccepted: false,
+          course: "",
+          department: "",
+          year: "",
+          universityRollno: "",
+          collegeId: "",
         });
         setErrors({});
         setTouched({});
@@ -69,8 +73,11 @@ const SignUp = () => {
           name: true,
           email: true,
           password: true,
-          confirmPassword: true,
-          IsAccepted: false,
+          course: true,
+          department: true,
+          year: true,
+          universityRollno: true,
+          collegeId: true,
         });
       });
 
@@ -130,7 +137,21 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            <img src={userIcon} alt="" />
+            <div className="kush">
+            < i class="fa-solid fa-user" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
+            </div>
           </div>
           {errors.name && touched.name && (
             <span className={styles.error}>{errors.name}</span>
@@ -155,7 +176,19 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            <img src={emailIcon} alt="" />
+            < i class="fa-solid fa-envelope" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
           </div>
           {errors.email && touched.email && (
             <span className={styles.error}>{errors.email}</span>
@@ -180,7 +213,19 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            <img src={passwordIcon} alt="" />
+            < i class="fa-solid fa-lock" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
           </div>
           {errors.password && touched.password && (
             <span className={styles.error}>{errors.password}</span>
@@ -189,31 +234,154 @@ const SignUp = () => {
         <div>
           <div
             className={
-              errors.confirmPassword && touched.confirmPassword
+              errors.course && touched.course
                 ? styles.unCompleted
-                : !errors.confirmPassword && touched.confirmPassword
-                ? styles.completed
-                : !errors.confirmPassword && touched.confirmPassword
+                : !errors.course && touched.course
                 ? styles.completed
                 : undefined
             }
           >
             <input
-              type="password"
-              name="confirmPassword"
-              value={data.confirmPassword}
-              placeholder="Confirm Password"
+              type="text"
+              name="course"
+              value={data.course}
+              placeholder="Course"
               onChange={changeHandler}
               onFocus={focusHandler}
               autoComplete="off"
             />
-            <img src={passwordIcon} alt="" />
+            < i class="fa-solid fa-book-open" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
           </div>
-          {errors.confirmPassword && touched.confirmPassword && (
-            <span className={styles.error}>{errors.confirmPassword}</span>
+          {errors.course && touched.course && (
+            <span className={styles.error}>{errors.course}</span>
           )}
         </div>
         <div>
+          <div
+            className={
+              errors.collegeId && touched.collegeId
+                ? styles.unCompleted
+                : !errors.collegeId && touched.collegeId
+                ? styles.completed
+                : undefined
+            }
+          >
+            <input
+              type="text"
+              name="collegeId"
+              value={data.collegeId}
+              placeholder="College ID"
+              onChange={changeHandler}
+              onFocus={focusHandler}
+              autoComplete="off"
+            />
+            < i class="fa-solid fa-graduation-cap" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
+          </div>
+          {errors.collegeId && touched.collegeId && (
+            <span className={styles.error}>{errors.collegeId}</span>
+          )}
+        </div>
+        <div>
+          <div
+            className={
+              errors.universityRollno && touched.universityRollno
+                ? styles.unCompleted
+                : !errors.universityRollno && touched.universityRollno
+                ? styles.completed
+                : undefined
+            }
+          >
+            <input
+              type="text"
+              name="universityRollno"
+              value={data.universityRollno}
+              placeholder="University Roll No"
+              onChange={changeHandler}
+              onFocus={focusHandler}
+              autoComplete="off"
+            />
+            < i class="fa-solid fa-id-card" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
+          </div>
+          {errors.universityRollno && touched.universityRollno && (
+            <span className={styles.error}>{errors.universityRollno}</span>
+          )}
+        </div>
+            
+            <div>
+              <div
+                className={
+                  errors.department && touched.department
+                    ? styles.unCompleted
+                    : !errors.department && touched.department
+                    ? styles.completed
+                    : undefined
+                }
+              >
+                <input
+                  type="text"
+                  name="department"
+                  value={data.department}
+                  placeholder="Department"
+                  onChange={changeHandler}
+                  onFocus={focusHandler}
+                  autoComplete="off"
+                />
+                < i class="fa-solid fa-building-user" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
+              </div>
+              {errors.department && touched.department && (
+                <span className={styles.error}>{errors.department}</span>
+              )}
+            </div>
+        
+        {/* <div>
           <div className={styles.terms}>
             <input
               type="checkbox"
@@ -228,7 +396,7 @@ const SignUp = () => {
           {errors.IsAccepted && touched.IsAccepted && (
             <span className={styles.error}>{errors.IsAccepted}</span>
           )}
-        </div>
+        </div> */}
         <div>
           <button type="submit">Create Account</button>
           <span

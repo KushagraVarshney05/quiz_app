@@ -16,7 +16,31 @@ export const validate = (data, type) => {
   } else {
     delete errors.password;
   }
+  if (!data.course) {
+    errors.course = "Course is required!";
+  } else {
+    delete errors.course;
+  }
+  
+  if (!data.department) {
+    errors.department = "Department is required!";
+  } else {
+    delete errors.department;
+  }
 
+  if (!data.collegeId) {
+    errors.collegeId = "College ID is required!";
+  } else {
+    delete errors.collegeId;
+  }
+
+  if (!data.universityRollno) {
+    errors.universityRollno = "University Roll Number is required!";
+  } else {
+    delete errors.universityRollno;
+  }
+  
+ 
   if (type === "signUp") {
     if (!data.name.trim()) {
       errors.name = "Username is Required!";
