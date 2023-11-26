@@ -21,11 +21,13 @@ const Login = () => {
     const urlApi = `http://localhost:5000/api/v1/user/login`;
     const api = axios
       .post(urlApi, obj)
-      .then((response) => response.data.token)
       .then((data) => {
         if (data) {
           notify("You login to your account successfully", "success");
-          localStorage.setItem("token", data);
+
+          localStorage.setItem("token", data.data.token);
+          localStorage.setItem("name", data.data.User.name);
+          localStorage.setItem("User_Id", data.data.User.Object_id);
           setData({
             email: "",
             password: "",

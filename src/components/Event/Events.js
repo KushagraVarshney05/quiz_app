@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Events.css";
 import Logout from "../Logout/Logout";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
+  const Navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,6 +29,10 @@ const Events = () => {
 
     fetchData();
   }, []);
+  const handleChange = async (e) => {
+    console.log(e);
+    Navigate(`/eventRegistration/${e}`);
+  };
 
   return (
     <div
@@ -35,6 +42,7 @@ const Events = () => {
         padding: "2rem",
       }}
     >
+      {console.log(events)}
       {events?.map((event) => (
         <div key={event?.event_name} className="card">
           <div className="card-body">
@@ -50,7 +58,12 @@ const Events = () => {
               Event Description: {event?.event_description}
             </p>
 
-            <button className="btn btn-primary">Enroll</button>
+            <button
+              className="btn btn-primary"
+              onClick={() => handleChange(event._id)}
+            >
+              Enroll
+            </button>
           </div>
         </div>
       ))}
