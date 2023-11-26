@@ -28,16 +28,17 @@ const Events = () => {
   }, []);
 
   return (
-    <div>
-      <Logout />
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "2rem",
+      }}
+    >
       {events?.map((event) => (
         <div key={event?.event_name} className="card">
-          <img
-            src="https://images.unsplash.com/photo-1621758149070-5a9d6a4d8f7b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8Y29sbGVjdGlvbnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80"
-            className="card-img-top"
-            alt="..."
-          />
           <div className="card-body">
+            <img src={event?.event_url} className="card-img-top" alt="..." />
             <h5 className="card-title">{event?.event_name}</h5>
             <p className="card-text">
               Start Date: {new Date(event?.start_date).toLocaleDateString()}
@@ -45,9 +46,15 @@ const Events = () => {
             <p className="card-text">
               End Date: {new Date(event?.end_date).toLocaleDateString()}
             </p>
+            <p className="card-text">
+              Event Description: {event?.event_description}
+            </p>
+
+            <button className="btn btn-primary">Enroll</button>
           </div>
         </div>
       ))}
+      <Logout />
     </div>
   );
 };

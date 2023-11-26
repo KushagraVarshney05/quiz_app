@@ -15,6 +15,5 @@ const Logout = () => {
     </div>
   );
 };
-/* FILEPATH: /home/yashvarshney/Documents/GitHub/finalYearProject/quiz_app/src/components/Logout/Logout.css */
 
 export default Logout;
