@@ -362,7 +362,7 @@ const SignUp = () => {
                   onFocus={focusHandler}
                   autoComplete="off"
                 />
-                < i class="fa-solid fa-building-user" style={{
+                <i i class="fa-solid fa-building-user" style={{
               color:"#4ad0cc" ,
               position: "absolute",
               maxWidth: "20px",
@@ -378,6 +378,43 @@ const SignUp = () => {
               </div>
               {errors.department && touched.department && (
                 <span className={styles.error}>{errors.department}</span>
+              )}
+            </div>
+            <div>
+              <div
+                className={
+                  errors.year && touched.year
+                    ? styles.unCompleted
+                    : !errors.year && touched.year
+                    ? styles.completed
+                    : undefined
+                }
+              >
+                <input
+                  type="text"
+                  name="year"
+                  value={data.year}
+                  placeholder="year"
+                  onChange={changeHandler}
+                  onFocus={focusHandler}
+                  autoComplete="off"
+                />
+                <i i class="fa-solid fa-building-user" style={{
+              color:"#4ad0cc" ,
+              position: "absolute",
+              maxWidth: "20px",
+              maxHeight: "20px",
+              left: "7px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              WebkitTransform: "translateY(-50%)",
+              MozTransform: "translateY(-50%)",
+              msTransform: "translateY(-50%)",
+              OTransform: "translateY(-50%)"
+            }}></i>
+              </div>
+              {errors.year && touched.year && (
+                <span className={styles.error}>{errors.year}</span>
               )}
             </div>
         
