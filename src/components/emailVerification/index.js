@@ -28,7 +28,7 @@ const EmailVerify = () => {
 				<div className={styles.container}>
 					
 					<h1>Email verified successfully</h1>
-					<img src={password} alt="success_img" className={styles.success_img} />
+					<img src={success} alt="success_img" className={styles.success_img} />
 
 					<Link to="/login">
 						<button className={styles.green_btn}>Login</button>
@@ -36,8 +36,7 @@ const EmailVerify = () => {
 				</div>
 			) : (
 				<h1>
-					<img src={password} alt="success_img" className={styles.success_img} />
-					404 Not Found
+				email verification failed
                 </h1>
                 
 
