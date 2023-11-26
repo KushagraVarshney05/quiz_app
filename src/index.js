@@ -1,39 +1,38 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import Login from './components/Login';
-import Signup from './components/SignUp';
-import './index.css';
-import App from './App';
-import Home from './components/Home';
-import EmailVerify from './components/emailVerification';
-import { createBrowserRouter, RouterProvider,  } from "react-router-dom";
-const appRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    children: [
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/signup",
-        element: <Signup />,
-      },
-      {
-        path: "/home",
-        element: <Home/>,
-      },
-      {
-        path: "/email/:token",
-        element: <EmailVerify/>,
-      },
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import Login from "./components/Login";
+import Signup from "./components/SignUp";
+import "./index.css";
+import App from "./App";
+import Home from "./components/Home";
+import Events from "./components/Event/Events";
 
-    ],
-  }
-]);
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <RouterProvider router={appRouter}/>
-);
+const Root = () => {
+  // Check if the user is logged in based on the presence of a token in localStorage
+  const isLoggedIn = !!localStorage.getItem("token");
 
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App />}>
+          <Route
+            path="/login"
+            element={isLoggedIn ? <Navigate to="/home" /> : <Login />}
+          />
+          <Route
+            path="/signup"
+            element={isLoggedIn ? <Navigate to="/home" /> : <Signup />}
+          />
+          <Route
+            path="/home"
+            element={isLoggedIn ? <Events /> : <Navigate to="/login" />}
+          />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<Root />);
