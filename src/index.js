@@ -7,6 +7,7 @@ import "./index.css";
 import App from "./App";
 import Home from "./components/Home";
 import Events from "./components/Event/Events";
+import EmailVerification from "./components/emailVerification";
 
 const Root = () => {
   // Check if the user is logged in based on the presence of a token in localStorage
@@ -28,6 +29,7 @@ const Root = () => {
             path="/home"
             element={isLoggedIn ? <Events /> : <Navigate to="/login" />}
           />
+          <Route path="/email/:token" element={<EmailVerification />} />
         </Route>
       </Routes>
     </BrowserRouter>
