@@ -56,8 +56,8 @@ const Events = () => {
         const response = await axios.post(
           "http://localhost:5000/api/v1/event_reg/login",
           {
-            Object_id: "65633132a6a083467017e48a",
-            Event_Object_id: "6563141514955b3f2dca2a3c",
+            Object_id: localStorage.getItem("User_Id"),
+            Event_Object_id: event._id,
           },
           {
             headers: {
