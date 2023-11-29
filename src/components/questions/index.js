@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import './styles.module.css';
+import './styles.css';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { ToastContainer, toast } from "react-toastify";
@@ -84,7 +84,8 @@ export default function App() {
 	};
 	return (
         <>
-		 <div className='app'>
+        <div className="container">
+		 <div className='app '>
 			{showScore ? (
 				<div className='score-section'>
 					You scored {score} out of {questions?.length}
@@ -99,12 +100,13 @@ export default function App() {
 					</div>
 					<div className='answer-section'>
 						{questions[currentQuestion]?.answerOptions?.map((answerOption) => (
-							<button onClick={() => handleAnswerOptionClick(answerOption?.isCorrect)}>{answerOption?.answerText}</button>
+							<button className='button' onClick={() => handleAnswerOptionClick(answerOption?.isCorrect)}>{answerOption?.answerText}</button>
 						))}
 					</div>
 				</>
 			)}
 		</div>
+        </div>
         <ToastContainer/> 
        
         </>
