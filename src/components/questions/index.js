@@ -6,9 +6,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../toast";
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function App() {
-
+    const Navigate = useNavigate();
     const {eventId} =useParams()
     const [questions,setQuestions] =useState({})
 
@@ -73,6 +74,9 @@ export default function App() {
             .then((res) => {
                 console.log(res);
                 notify("Your result has been submitted","success")
+                setTimeout(() => {  
+                Navigate("/home")
+                }, 2000);
             })
             .catch((err) => {
                 console.log(err);
@@ -84,7 +88,7 @@ export default function App() {
 	};
 	return (
         <>
-        <div className="container">
+        <div div className="container">
 		 <div className='app '>
 			{showScore ? (
 				<div className='score-section'>
