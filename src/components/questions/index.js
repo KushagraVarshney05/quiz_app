@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-// import './styles.module.css';
+import "./styles.module.css";
 import axios from "axios";
 import { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { notify } from "../toast";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function App() {
+  const Navigate = useNavigate();
   const { eventId } = useParams();
   const [questions, setQuestions] = useState({});
 
@@ -77,6 +79,9 @@ export default function App() {
         .then((res) => {
           console.log(res);
           notify("Your result has been submitted", "success");
+          setTimeout(() => {
+            Navigate("/home");
+          }, 2000);
         })
         .catch((err) => {
           console.log(err);
@@ -86,38 +91,42 @@ export default function App() {
   };
   return (
     <>
-      <div className="app">
-        {showScore ? (
-          <div className="score-section">
-            You scored {score} out of {questions?.length}
-          </div>
-        ) : (
-          <>
-            <div className="question-section">
-              <div className="question-count">
-                <span>Question {currentQuestion + 1}</span>/{questions?.length}
-              </div>
-              <div className="question-text">
-                {questions[currentQuestion]?.questionText}
-              </div>
+      <div className="yash">
+        <div className="appp">
+          {showScore ? (
+            <div className="score-sections">
+              You scored {score} out of {questions?.length}
             </div>
-            <div className="answer-section">
-              {questions[currentQuestion]?.answerOptions?.map(
-                (answerOption) => (
-                  <button
-                    onClick={() =>
-                      handleAnswerOptionClick(answerOption?.isCorrect)
-                    }
-                  >
-                    {answerOption?.answerText}
-                  </button>
-                )
-              )}
-            </div>
-          </>
-        )}
+          ) : (
+            <>
+              <div className="question-sections">
+                <div className="question-counts">
+                  <span>Question {currentQuestion + 1}</span>/
+                  {questions?.length}
+                </div>
+                <div className="question-texts">
+                  {questions[currentQuestion]?.questionText}
+                </div>
+              </div>
+              <div className="answer-sections">
+                {questions[currentQuestion]?.answerOptions?.map(
+                  (answerOption) => (
+                    <button
+                      className="button"
+                      onClick={() =>
+                        handleAnswerOptionClick(answerOption?.isCorrect)
+                      }
+                    >
+                      {answerOption?.answerText}
+                    </button>
+                  )
+                )}
+              </div>
+            </>
+          )}
+        </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </>
   );
 }
