@@ -36,7 +36,7 @@ const Root = () => {
             path="/eventRegistration/:eventId"
             element={<EventRegistration />}
           />
-          <Route path="/questions" element={<Questions />} />
+          <Route path="/questions/:eventId" element={<Questions />} />
         </Route>
       </Routes>
     </BrowserRouter>
