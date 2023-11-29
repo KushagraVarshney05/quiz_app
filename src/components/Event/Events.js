@@ -10,8 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 const Events = () => {
   const [events, setEvents] = useState([]);
   const Navigate = useNavigate();
-  const [id, setid] = useState("");
   const [registered, setRegistered] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,16 +39,12 @@ const Events = () => {
     console.log(eventId);
     Navigate(`/eventRegistration/${eventId}`);
   };
-  const handleSecondary = () => {
-    console.log("You have already registered for this event");
-    notify("You have already registered for this event", "error");
-  };
+  const handleSecondary = (id) => {
 
-  useEffect(() => {
-    if (events.length > 0) {
-      setid(events[0]._id);
-    }
-  }, [events]);
+    Navigate(`/questions/${id}`);
+  
+    notify("Something went wrong", "error");
+  };
 
   useEffect(() => {
     events.forEach(async (event) => {
@@ -71,6 +67,19 @@ const Events = () => {
         if (msg === "User  registered") {
           setRegistered(true);
         }
+        const result = await axios.get (
+          `http://localhost:5000/api/v1/question/check/${event._id}/${localStorage.getItem("User_Id")}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        if(result.data.isSubmitted){
+          setIsSubmitted(true);
+        };
+
+
       } catch (error) {
         console.log(error);
       }
@@ -102,10 +111,12 @@ const Events = () => {
               </p>
 
               {registered ? (
-                <button className="btn btn-secondary" onClick={handleSecondary}>
-                  Registered
+                <button className="btn btn-secondary" onClick={()=>handleSecondary(event._id)}>
+                  Start Quiz
                 </button>
-              ) : (
+              ) 
+              :
+              (
                 <button
                   className="btn btn-primary"
                   onClick={() => handleChange(event._id)}
