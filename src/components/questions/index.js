@@ -12,6 +12,7 @@ export default function App() {
   const Navigate = useNavigate();
   const { eventId } = useParams();
   const [questions, setQuestions] = useState({});
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     axios
@@ -34,6 +35,7 @@ export default function App() {
       .catch((err) => {
         console.log(err.response.data.msg);
         notify(err.response.data.msg, "error");
+        setError(err.response.data.msg);
       });
   }, []);
 
@@ -94,9 +96,11 @@ export default function App() {
       <div div className="container">
         <div className="app ">
           {showScore ? (
-            <div className="score-section">
+            <div className="score-sections">
               You scored {score} out of {questions?.length}
             </div>
+          ) : error ? (
+            <div className="score-sections">{error}</div>
           ) : (
             <>
               <div className="question-section">
