@@ -45,6 +45,9 @@ const Events = () => {
   
     notify("Something went wrong", "error");
   };
+  const handleSubmitted = () => { 
+    notify("You have already submitted the test", "error");
+  }
 
   useEffect(() => {
     events.forEach(async (event) => {
@@ -75,7 +78,8 @@ const Events = () => {
             },
           }
         );
-        if(result.data.isSubmitted){
+        console.log(result.data.isResultSubmitted);
+        if(result.data.isResultSubmitted){
           setIsSubmitted(true);
         };
 
@@ -111,9 +115,11 @@ const Events = () => {
               </p>
 
               {registered ? (
-                <button className="btn btn-secondary" onClick={()=>handleSecondary(event._id)}>
+                !isSubmitted?(<button className="btn btn-secondary" onClick={()=>handleSecondary(event._id)}>
                   Start Quiz
-                </button>
+                </button>):(<button className="btn btn-secondary" onClick={handleSubmitted}>
+                  Already Submitted
+                </button>)
               ) 
               :
               (
