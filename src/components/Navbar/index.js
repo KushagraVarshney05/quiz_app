@@ -19,10 +19,10 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <Link className="navbar-brand" to="/home">One Stop CS</Link>
-      <div className="navbar-segments">
+      {/* <div className="navbar-segments">
         {token &&<Link className="navbar-segment" to="/compiler">Compiler</Link>}
         <Link className="navbar-segment" to="/home">Home</Link>
-      </div>
+      </div> */}
       <div className="navbar-user">
         {token && username && <span className="username">Welcome, {username}!</span>}
         {token && <Logout />}

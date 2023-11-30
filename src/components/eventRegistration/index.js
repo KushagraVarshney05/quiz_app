@@ -32,7 +32,7 @@ const Index = () => {
       .then((res) => {
         notify("You have successfully registered for the event", "success");
         setTimeout(() => {
-          window.location.replace("/home");
+          window.location.replace("/event");
         }, 2000);
         setPassword("");
       })

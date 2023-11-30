@@ -43,7 +43,7 @@ const Events = () => {
 
     Navigate(`/questions/${id}`);
   
-    notify("Something went wrong", "error");
+    // notify("Something went wrong", "error");
   };
   const handleSubmitted = () => { 
     notify("You have already submitted the test", "error");

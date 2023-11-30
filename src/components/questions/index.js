@@ -28,7 +28,7 @@ export default function App() {
         }
       )
       .then((res) => {
-        console.log(res.data.questions.Questions);
+        // console.log(res.data.questions.Questions);
         setQuestions(res.data.questions.Questions);
         notify("Best of Luck", "success");
       })
@@ -46,8 +46,12 @@ export default function App() {
   const handleAnswerOptionClick = async (isCorrect) => {
     let updatedScore = score;
     if (isCorrect) {
+      notify("You are right", "success");
       updatedScore = updatedScore + 1;
       setScore(score + 1);
+    }
+    else{
+      notify("You are wrong", "error");
     }
 
     const nextQuestion = currentQuestion + 1;
