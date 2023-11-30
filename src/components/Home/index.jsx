@@ -8,9 +8,9 @@ const Home = () => {
     <>
       {/* <Navbar /> */}
       <div className="banner-img">
-        <div className="title">
+        <div className="title-home">
           <h3>
-            Find the <span>Right Job</span> In the
+            Find the <span className="kush">Right Job</span> In the
             <br />
             <span> Right Companies</span>
           </h3>
@@ -18,8 +18,8 @@ const Home = () => {
             <p>Got fired..!! Get Ready to be hired</p>
           </div>
         </div>
-        <div className="button" data-testid="btn">
-          <Link to="/login">Browse quiz</Link>
+        <div className="button-home" data-testid="btn">
+          <Link className="link" to="/event">Browse quiz</Link>
         </div>
       </div>
       <div className="social-media" data-testid="images">

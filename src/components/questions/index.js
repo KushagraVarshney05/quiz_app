@@ -82,7 +82,7 @@ export default function App() {
           console.log(res);
           notify("Your result has been submitted", "success");
           setTimeout(() => {
-            Navigate("/home");
+            Navigate("/event");
           }, 2000);
         })
         .catch((err) => {

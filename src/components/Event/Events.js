@@ -133,7 +133,6 @@ const Events = () => {
             </div>
           </div>
         ))}
-        <Logout />
       </div>
       <ToastContainer />
     </div>

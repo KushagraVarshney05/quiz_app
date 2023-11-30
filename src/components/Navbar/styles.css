@@ -1,0 +1,48 @@
+/* Navbar Styles */
+
+.navbar {
+    background-color: #4285f4; /* Google Blue */
+    color: #ffffff; /* White text color */
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+.navbar-brand {
+    color: #ffffff; /* White text color */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    /* transition: 1.2s fade; */
+    color:black;
+}
+  
+  .navbar-user {
+    display: flex;
+    align-items: center;
+  }
+  
+  .username {
+    font-size: 1.5em;
+    margin-right: 10px;
+  }
+  
+  /* Logout Button Styles */
+  
+  .btn-logout {
+    background-color: #34a853; /* Google Green */
+    color: #ffffff; /* White text color */
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-logout:hover {
+    background-color: #2e7d32; /* Darker green on hover */
+  }
+  

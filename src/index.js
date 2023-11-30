@@ -19,16 +19,18 @@ const Root = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
           <Route
             path="/login"
-            element={isLoggedIn ? <Navigate to="/home" /> : <Login />}
+            element={isLoggedIn ? <Navigate to="/event" /> : <Login />}
           />
           <Route
             path="/signup"
-            element={isLoggedIn ? <Navigate to="/home" /> : <Signup />}
+            element={isLoggedIn ? <Navigate to="/event" /> : <Signup />}
           />
           <Route
-            path="/home"
+            path="/event"
             element={isLoggedIn ? <Events /> : <Navigate to="/login" />}
           />
           <Route path="/email/:token" element={<EmailVerification />} />

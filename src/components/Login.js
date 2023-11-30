@@ -33,7 +33,7 @@ const Login = () => {
             password: "",
           });
           setTimeout(() => {
-            window.location.replace("/home");
+            window.location.replace("/event");
             console.log("yash varshney");
           }, 2000);
         } else notify("Your password or your email is wrong", "error");
