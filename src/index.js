@@ -10,6 +10,7 @@ import Events from "./components/Event/Events";
 import EmailVerification from "./components/emailVerification";
 import EventRegistration from "./components/eventRegistration";
 import Questions from "./components/questions";
+import Compiler from "./components/compiler/index";
 
 const Root = () => {
   // Check if the user is logged in based on the presence of a token in localStorage
@@ -19,6 +20,7 @@ const Root = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
+          <Route path="/compiler" element={<Compiler />} />
           <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route

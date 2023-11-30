@@ -3,7 +3,7 @@
 .navbar {
     background-color: #4285f4; /* Google Blue */
     color: #ffffff; /* White text color */
-    padding: 20px 40px;
+    padding: 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -11,7 +11,7 @@
   
 .navbar-brand {
     color: #ffffff; /* White text color */
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
@@ -24,9 +24,14 @@
     display: flex;
     align-items: center;
   }
+  .navbar-segmnets {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+  }
   
   .username {
-    font-size: 1.5em;
+    font-size: 1.2em;
     margin-right: 10px;
   }
   

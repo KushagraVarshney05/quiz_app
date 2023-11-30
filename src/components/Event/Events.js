@@ -134,7 +134,7 @@ const Events = () => {
           </div>
         ))}
       </div>
-      <ToastContainer />
+      {/* <ToastContainer /> */}
     </div>
   );
 };
