@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import "./Events.css";
-import Logout from "../Logout/Logout";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { notify } from "../toast";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Events = () => {
   const [events, setEvents] = useState([]);
   const Navigate = useNavigate();
-  const [registered, setRegistered] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [registrationStatus, setRegistrationStatus] = useState({});
+  const [submissionStatus, setSubmissionStatus] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,60 +35,71 @@ const Events = () => {
     fetchData();
   }, []);
 
-  const handleChange = async (eventId) => {
-    console.log(eventId);
-    Navigate(`/eventRegistration/${eventId}`);
-  };
-  const handleSecondary = (id) => {
-
-    Navigate(`/questions/${id}`);
-  
-    // notify("Something went wrong", "error");
-  };
-  const handleSubmitted = () => { 
-    notify("You have already submitted the test", "error");
-  }
-
   useEffect(() => {
-    events.forEach(async (event) => {
+    const checkRegistrationAndSubmission = async () => {
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/v1/event_reg/login",
-          {
-            Object_id: localStorage.getItem("User_Id"),
-            Event_Object_id: event._id,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+        for (const event of events) {
+          const regResponse = await axios.post(
+            "http://localhost:5000/api/v1/event_reg/login",
+            {
+              Object_id: localStorage.getItem("User_Id"),
+              Event_Object_id: event._id,
             },
-          }
-        );
-        const msg = response.data.msg;
-        console.log(response.data.msg);
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
 
-        if (msg === "User  registered") {
-          setRegistered(true);
+          const regMsg = regResponse.data.msg;
+          setRegistrationStatus((prevStatus) => ({
+            ...prevStatus,
+            [event._id]: regMsg === "User  registered",
+          }));
+
+          const result = await axios.get(
+            `http://localhost:5000/api/v1/question/check/${
+              event._id
+            }/${localStorage.getItem("User_Id")}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+
+          const isResultSubmitted = result.data.isResultSubmitted;
+          setSubmissionStatus((prevStatus) => ({
+            ...prevStatus,
+            [event._id]: isResultSubmitted,
+          }));
         }
-        const result = await axios.get (
-          `http://localhost:5000/api/v1/question/check/${event._id}/${localStorage.getItem("User_Id")}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        console.log(result.data.isResultSubmitted);
-        if(result.data.isResultSubmitted){
-          setIsSubmitted(true);
-        };
-
-
       } catch (error) {
         console.log(error);
       }
-    });
+    };
+
+    if (events.length > 0) {
+      checkRegistrationAndSubmission();
+    }
   }, [events]);
+
+  const handleChange = async (eventId) => {
+    Navigate(`/eventRegistration/${eventId}`);
+  };
+
+  const handleSecondary = (id) => {
+    if (id === "6568e4b5f061862dc7c8f802") {
+      Navigate(`/compiler`);
+    } else {
+      Navigate(`/questions/${id}`);
+    }
+  };
+
+  const handleSubmitted = () => {
+    notify("You have already submitted the test", "error");
+  };
 
   return (
     <div>
@@ -100,7 +111,7 @@ const Events = () => {
         }}
       >
         {events?.map((event) => (
-          <div key={event?.event_name} className="card">
+          <div key={event?._id} className="card">
             <div className="card-body">
               <img src={event?.event_url} className="card-img-top" alt="..." />
               <h5 className="card-title">{event?.event_name}</h5>
@@ -114,15 +125,23 @@ const Events = () => {
                 Event Description: {event?.event_description}
               </p>
 
-              {registered ? (
-                !isSubmitted?(<button className="btn btn-secondary" onClick={()=>handleSecondary(event._id)}>
-                  Start Quiz
-                </button>):(<button className="btn btn-secondary" onClick={handleSubmitted}>
-                  Already Submitted
-                </button>)
-              ) 
-              :
-              (
+              {registrationStatus[event._id] ? (
+                !submissionStatus[event._id] ? (
+                  <button
+                    className="btn btn-secondary"
+                    onClick={() => handleSecondary(event._id)}
+                  >
+                    Start
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-secondary"
+                    onClick={handleSubmitted}
+                  >
+                    Already Submitted
+                  </button>
+                )
+              ) : (
                 <button
                   className="btn btn-primary"
                   onClick={() => handleChange(event._id)}
@@ -134,7 +153,7 @@ const Events = () => {
           </div>
         ))}
       </div>
-      {/* <ToastContainer /> */}
+      <ToastContainer />
     </div>
   );
 };
