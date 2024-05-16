@@ -1,68 +1,147 @@
-import React, { useState } from 'react';
-import "./styles.css";
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+// import DefaultLayout from "../Components/DefaultLayout";
+import axios from "axios";
+import { languages, output_api_url } from "./constant";
 
-const Index = () => {
-    const [formData, setFormData] = useState({
-        code: '',
-        input: '',
-        lang: 'C',
-        inputRadio: 'false'
-    });
-    const [output, setOutput] = useState('');
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log("hello");
-        console.log(formData);
-
-        // Make the API call
-        axios.post('http://localhost:8080/compilecode', formData)
-            .then(response => {
-                // Handle the API response
-                console.log(response.data);
-                setOutput(response.data.output);
-
-            })
-            .catch(error => {
-                // Handle any errors
-                console.log(error);
-            });
-    };
-
-    return (
-        <div>
-            <h1>Compiler</h1>
-            <form id="myform" name="myform" method="post" onSubmit={handleSubmit}>
-                <h3>Code</h3>
-                <textarea rows="13" cols="100" id="code" name="code" value={formData.code} onChange={handleChange}></textarea>
-                <br />
-                <h3>Output</h3>
-                <h2 className='output'>{output}</h2>
-                <br />
-                Language :
-                <select name="lang" value={formData.lang} onChange={handleChange}>
-                    <option value="C">C</option>
-                    <option value="Java">Java</option>
-                    <option value="Python">Python</option>
-                </select>
-                {/* Compile With Input :
-                <input type="radio" name="inputRadio" id="inputRadio" value="true" checked={formData.inputRadio === 'true'} onChange={handleChange} />yes
-                <input type="radio" name="inputRadio" id="inputRadio" value="false" checked={formData.inputRadio === 'false'} onChange={handleChange} />No
-                <br /> */}
-                <input type="submit" value="submit" name="submit" />
+const SubmitForm = () => {
+  const [username, setUsername] = useState("");
+  const [codeLanguage, setCodeLanguage] = useState("");
+  const [stdin, setStdin] = useState("");
+  const [sourceCode, setSourceCode] = useState("");
+  const [output, setOutput] = useState("");
+  const options = {
+    method: "POST",
+    url: output_api_url,
+    params: {
+      base64_encoded: "true",
+      fields: "*",
+    },
+    headers: {
+      "content-type": "application/json",
+      "Content-Type": "application/json",
+      "X-RapidAPI-Key": process.env.React_App_API_KEY,
+      "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+    },
+    data: {
+      language_id: codeLanguage,
+      source_code: btoa(sourceCode),
+      stdin: btoa(stdin),
+    },
+  };
+  const fetchOutput = async () => {
+    try {
+      const response = await axios.request(options);
+      if (response.data.stdout) setOutput(atob(response.data.stdout));
+      else if (response.data.stderr) setOutput(atob(response.data.stderr));
+      else setOutput(atob(response.data.compile_output));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleSubmit = async (e) => {
+    fetchOutput();
+  };
+  const postData = async () => {
+    if (output !== "") {
+      try {
+        const data = {
+          username: localStorage.getItem("name"),
+          code_language: codeLanguage,
+          stdin: stdin,
+          source_code: sourceCode,
+          stdout: output,
+        };
+        console.log(data);
+        const response = await axios.post(process.env.React_App_Post_URL, data);
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  useEffect(() => {
+    postData();
+  }, [output]);
+  useEffect(() => {
+    setCodeLanguage("");
+    setUsername("");
+    setStdin("");
+    setSourceCode("");
+    setOutput("");
+  }, []);
+  return (
+    // <div className="h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full h-full">
+        <div className="flex flex-col gap-9 h-screen">
+          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+              }}
+            >
+              <div className="p-6.5">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  <div className="flex flex-col gap-4">
+                    <div className="mb-4">
+                      <label className="block text-black dark:text-white">
+                        Preferred Code Language:{" "}
+                        <span className="text-meta-1">*</span>
+                      </label>
+                      <select
+                        onChange={(e) => setCodeLanguage(e.target.value)}
+                        className="w-full rounded border border-primary bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary dark:border-form-stroke dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      >
+                        {languages.map((language) => (
+                          <option key={language.id} value={language.id}>
+                            {language.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="mb-2.5 block text-black dark:text-white">
+                        STDIN
+                      </label>
+                      <textarea
+                        value={stdin}
+                        onChange={(e) => setStdin(e.target.value)}
+                        rows={2}
+                        placeholder="Standard Input (stdin)"
+                        className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      ></textarea>
+                    </div>
+                  </div>
+                  <div className="mt-auto">
+                    <label className="mb-2.5 block text-black dark:text-white">
+                      Source Code: <span className="text-meta-1">*</span>
+                    </label>
+                    <textarea
+                      value={sourceCode}
+                      onChange={(e) => setSourceCode(e.target.value)}
+                      rows={15}
+                      placeholder="Source Code"
+                      className="w-full h-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="mb-2.5 block text-black dark:text-white">
+                  {"Output : " + output}
+                </div>
+                <button
+                  className="w-full mt-6 rounded bg-primary p-3 font-medium text-gray hover:bg-opacity-90"
+                  onClick={() => {
+                    handleSubmit();
+                  }}
+                >
+                  Submit
+                </button>
+              </div>
             </form>
+          </div>
         </div>
-    );
+      </div>
+      // </div>
+  );
 };
 
-export default Index;
+export default SubmitForm;
