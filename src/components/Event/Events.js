@@ -75,12 +75,10 @@ const Events = () => {
             [event._id]: isResultSubmitted,
           }));
         }
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     };
 
-    if (events.length > 0) {
+    if (events?.length > 0) {
       checkRegistrationAndSubmission();
     }
   }, [events]);
@@ -106,7 +104,7 @@ const Events = () => {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          gap: "3rem",
           padding: "2rem",
         }}
       >

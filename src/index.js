@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./components/Login";
+import AdminLogin from "./components/AdminLogin";
 import Signup from "./components/SignUp";
 import "./index.css";
 import App from "./App";
@@ -11,6 +12,8 @@ import EmailVerification from "./components/emailVerification";
 import EventRegistration from "./components/eventRegistration";
 import Questions from "./components/questions";
 import Compiler from "./components/compiler/index";
+import HomeAdmin from "../src/components/Admin/Home";
+import AdminPanel from "./components/Admin/Adminpanel";
 
 const Root = () => {
   // Check if the user is logged in based on the presence of a token in localStorage
@@ -27,14 +30,17 @@ const Root = () => {
             path="/login"
             element={isLoggedIn ? <Navigate to="/event" /> : <Login />}
           />
+          <Route path="/admin/login" element={<AdminLogin />} />
           <Route
             path="/signup"
             element={isLoggedIn ? <Navigate to="/event" /> : <Signup />}
           />
+
           <Route
             path="/event"
             element={isLoggedIn ? <Events /> : <Navigate to="/login" />}
           />
+          <Route path="/admin/panel" element={<AdminPanel />} />
           <Route path="/email/:token" element={<EmailVerification />} />
           <Route
             path="/eventRegistration/:eventId"
