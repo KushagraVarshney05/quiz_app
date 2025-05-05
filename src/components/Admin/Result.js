@@ -103,13 +103,16 @@ export default ViewResults;
 // Styles
 const styles = {
   form: {
-    maxWidth: "700px",
+    width:"800px",
+    maxWidth: "900px",
     margin: "auto",
-    padding: "25px",
-    borderRadius: "10px",
-    backgroundColor: "#f7f7f7",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    fontFamily: "Segoe UI, sans-serif",
+    marginTop:"20px",
+    marginBottom:"20px",
+    padding: "20px",
+    borderRadius: "8px",
+    backgroundColor: "#f9f9f9",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
+    fontFamily: "Arial, sans-serif",
   },
   heading: {
     textAlign: "center",
@@ -129,14 +132,13 @@ const styles = {
   },
   button: {
     width: "100%",
-    padding: "12px",
-    borderRadius: "6px",
+    padding: "10px",
+    borderRadius: "4px",
     border: "none",
-    backgroundColor: "#007bff",
+    backgroundColor: "#4CAF50",
     color: "#fff",
     fontWeight: "bold",
     cursor: "pointer",
-    fontSize: "16px",
   },
   resultBox: {
     marginTop: "30px",

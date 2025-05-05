@@ -7,6 +7,7 @@ const AddQuestion = () => {
     Questions: [
       {
         questionText: "",
+        marks: "",
         answerOptions: [
           { answerText: "", isCorrect: false },
           { answerText: "", isCorrect: false },
@@ -31,6 +32,7 @@ const AddQuestion = () => {
     fetchEvents();
   }, []);
 
+  // Handle submitting the form
   const handleQuestionSubmit = async (e) => {
     e.preventDefault();
     const res = await fetch("http://localhost:5000/api/v1/question", {
@@ -39,7 +41,69 @@ const AddQuestion = () => {
       body: JSON.stringify(questionData),
     });
     const data = await res.json();
-    alert("Questions added: " + JSON.stringify(data));
+    
+    // On success, reset the form
+    if (res.ok) {
+      alert("Questions added: " + JSON.stringify(data));
+      setQuestionData({
+        EventId: "",
+        Questions: [
+          {
+            questionText: "",
+            marks: "",
+            answerOptions: [
+              { answerText: "", isCorrect: false },
+              { answerText: "", isCorrect: false },
+              { answerText: "", isCorrect: false },
+              { answerText: "", isCorrect: false },
+            ],
+          },
+        ],
+      });
+    } else {
+      alert("Failed to add question: " + JSON.stringify(data));
+    }
+  };
+
+  // Add a new question to the list
+  const handleAddQuestion = () => {
+    setQuestionData({
+      ...questionData,
+      Questions: [
+        ...questionData.Questions,
+        {
+          questionText: "",
+          marks: "",
+          answerOptions: [
+            { answerText: "", isCorrect: false },
+            { answerText: "", isCorrect: false },
+            { answerText: "", isCorrect: false },
+            { answerText: "", isCorrect: false },
+          ],
+        },
+      ],
+    });
+  };
+
+  // Handle updating a specific question's field
+  const handleQuestionChange = (index, field, value) => {
+    const updatedQuestions = [...questionData.Questions];
+    updatedQuestions[index][field] = value;
+    setQuestionData({ ...questionData, Questions: updatedQuestions });
+  };
+
+  // Handle updating answer options for a specific question
+  const handleAnswerOptionChange = (questionIndex, optionIndex, field, value) => {
+    const updatedQuestions = [...questionData.Questions];
+    updatedQuestions[questionIndex].answerOptions[optionIndex][field] = value;
+    setQuestionData({ ...questionData, Questions: updatedQuestions });
+  };
+
+  // Handle changing the 'isCorrect' status of an answer option
+  const handleCorrectChange = (questionIndex, optionIndex, isCorrect) => {
+    const updatedQuestions = [...questionData.Questions];
+    updatedQuestions[questionIndex].answerOptions[optionIndex].isCorrect = isCorrect;
+    setQuestionData({ ...questionData, Questions: updatedQuestions });
   };
 
   return (
@@ -68,64 +132,86 @@ const AddQuestion = () => {
         ))}
       </select>
 
-      {/* Question Input */}
-      <label style={styles.label}>Question:</label>
-      <input
-        type="text"
-        placeholder="Enter your question"
-        style={styles.input}
-        value={questionData.Questions[0].questionText}
-        onChange={(e) => {
-          const updatedQuestions = [...questionData.Questions];
-          updatedQuestions[0].questionText = e.target.value;
-          setQuestionData({ ...questionData, Questions: updatedQuestions });
-        }}
-        required
-      />
-
-      {/* Answer Options */}
-      <label style={styles.label}>Answer Options:</label>
-      {questionData.Questions[0].answerOptions.map((opt, idx) => (
-        <div key={idx} style={styles.optionRow}>
+      {/* Loop through questions */}
+      {questionData.Questions.map((question, qIndex) => (
+        <div key={qIndex}>
+          {/* Question Input */}
+          <label style={styles.label}>Question {qIndex + 1}:</label>
           <input
             type="text"
-            placeholder={`Answer ${idx + 1}`}
+            placeholder="Enter your question"
             style={styles.input}
-            value={opt.answerText}
-            onChange={(e) => {
-              const options = [...questionData.Questions[0].answerOptions];
-              options[idx].answerText = e.target.value;
-              setQuestionData({
-                ...questionData,
-                Questions: [
-                  { ...questionData.Questions[0], answerOptions: options },
-                ],
-              });
-            }}
+            value={question.questionText}
+            onChange={(e) =>
+              handleQuestionChange(qIndex, "questionText", e.target.value)
+            }
             required
           />
-          <label style={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              checked={opt.isCorrect}
-              onChange={(e) => {
-                const options = [...questionData.Questions[0].answerOptions];
-                options[idx].isCorrect = e.target.checked;
-                setQuestionData({
-                  ...questionData,
-                  Questions: [
-                    { ...questionData.Questions[0], answerOptions: options },
-                  ],
-                });
-              }}
-            />
-            Correct
-          </label>
+
+          {/* Answer Options */}
+          <label style={styles.label}>Answer Options:</label>
+          {question.answerOptions.map((opt, idx) => (
+            <div key={idx} style={styles.optionRow}>
+              <input
+                type="text"
+                placeholder={`Answer ${idx + 1}`}
+                style={styles.input}
+                value={opt.answerText}
+                onChange={(e) =>
+                  handleAnswerOptionChange(
+                    qIndex,
+                    idx,
+                    "answerText",
+                    e.target.value
+                  )
+                }
+                required
+              />
+              <label style={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={opt.isCorrect}
+                  onChange={(e) =>
+                    handleCorrectChange(
+                      qIndex,
+                      idx,
+                      e.target.checked
+                    )
+                  }
+                />
+                Correct
+              </label>
+            </div>
+          ))}
+
+          {/* Marks Input */}
+          <label style={styles.label}>Marks:</label>
+          <input
+            type="number"
+            min="1"
+            max="10"
+            placeholder="Enter marks for this question"
+            style={styles.input}
+            value={question.marks}
+            onChange={(e) =>
+              handleQuestionChange(qIndex, "marks", e.target.value)
+            }
+            required
+          />
         </div>
       ))}
 
+      {/* Button to add more questions */}
+      <button
+        type="button"
+        onClick={handleAddQuestion}
+        style={styles.button}
+      >
+        Add Another Question
+      </button>
+
       <button type="submit" style={styles.button}>
-        Add Question
+        Add Questions
       </button>
     </form>
   );
@@ -136,8 +222,11 @@ export default AddQuestion;
 // Simple inline styles
 const styles = {
   form: {
-    maxWidth: "600px",
+    width:"800px",
+    maxWidth: "900px",
     margin: "auto",
+    marginTop:"20px",
+    marginBottom:"20px",
     padding: "20px",
     borderRadius: "8px",
     backgroundColor: "#f9f9f9",
@@ -181,6 +270,7 @@ const styles = {
     width: "100%",
     padding: "10px",
     borderRadius: "4px",
+    marginBottom: "10px", // Added margin-bottom to space the button out
     border: "none",
     backgroundColor: "#4CAF50",
     color: "#fff",
