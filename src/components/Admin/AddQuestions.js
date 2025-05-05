@@ -2,23 +2,25 @@ import React, { useState, useEffect } from "react";
 
 const AddQuestion = () => {
   const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null); // full event object
   const [questionData, setQuestionData] = useState({
     EventId: "",
     Questions: [
       {
         questionText: "",
         marks: "",
-        answerOptions: [
+        answerOptions: [ // only for quiz
           { answerText: "", isCorrect: false },
           { answerText: "", isCorrect: false },
           { answerText: "", isCorrect: false },
           { answerText: "", isCorrect: false },
         ],
+        input: "", // only for competition
+        output: "", // only for competition
       },
     ],
   });
 
-  // Fetch event list on mount
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -32,40 +34,84 @@ const AddQuestion = () => {
     fetchEvents();
   }, []);
 
-  // Handle submitting the form
   const handleQuestionSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch("http://localhost:5000/api/v1/question", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(questionData),
-    });
-    const data = await res.json();
-    
-    // On success, reset the form
-    if (res.ok) {
-      alert("Questions added: " + JSON.stringify(data));
-      setQuestionData({
-        EventId: "",
-        Questions: [
-          {
-            questionText: "",
-            marks: "",
-            answerOptions: [
-              { answerText: "", isCorrect: false },
-              { answerText: "", isCorrect: false },
-              { answerText: "", isCorrect: false },
-              { answerText: "", isCorrect: false },
-            ],
-          },
-        ],
-      });
+  
+    let apiUrl = "";
+    let bodyToSend = {};
+  
+    if (selectedEvent?.key === "quiz") {
+      apiUrl = "http://localhost:5000/api/v1/question/quiz";
+  
+      // Strip out input/output from each question before sending
+      const quizQuestions = questionData.Questions.map((q) => ({
+        questionText: q.questionText,
+        marks: q.marks,
+        answerOptions: q.answerOptions,
+      }));
+  
+      bodyToSend = {
+        EventId: questionData.EventId,
+        Questions: quizQuestions,
+      };
+    } else if (selectedEvent?.key === "competition") {
+      apiUrl = "http://localhost:5000/api/v1/cometition-quetion";
+  
+      const competitionQuestions = questionData.Questions.map((q) => ({
+        question: q.questionText,
+        input: q.input,
+        output: q.output,
+        marks: q.marks,
+      }));
+  
+      bodyToSend = {
+        eventId: questionData.EventId,
+        questions: competitionQuestions,
+      };
     } else {
-      alert("Failed to add question: " + JSON.stringify(data));
+      alert("Invalid event type selected.");
+      return;
+    }
+  
+    try {
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bodyToSend),
+      });
+  
+      const data = await res.json();
+  
+      if (res.ok) {
+        alert("Questions added successfully!");
+        setSelectedEvent(null);
+        setQuestionData({
+          EventId: "",
+          Questions: [
+            {
+              questionText: "",
+              marks: "",
+              answerOptions: [
+                { answerText: "", isCorrect: false },
+                { answerText: "", isCorrect: false },
+                { answerText: "", isCorrect: false },
+                { answerText: "", isCorrect: false },
+              ],
+              input: "",
+              output: "",
+            },
+          ],
+        });
+      } else {
+        alert("Failed to add question: " + JSON.stringify(data));
+      }
+    } catch (err) {
+      console.error("Error submitting questions:", err);
+      alert("Something went wrong while submitting questions.");
     }
   };
+  
 
-  // Add a new question to the list
   const handleAddQuestion = () => {
     setQuestionData({
       ...questionData,
@@ -80,26 +126,25 @@ const AddQuestion = () => {
             { answerText: "", isCorrect: false },
             { answerText: "", isCorrect: false },
           ],
+          input: "",
+          output: "",
         },
       ],
     });
   };
 
-  // Handle updating a specific question's field
   const handleQuestionChange = (index, field, value) => {
     const updatedQuestions = [...questionData.Questions];
     updatedQuestions[index][field] = value;
     setQuestionData({ ...questionData, Questions: updatedQuestions });
   };
 
-  // Handle updating answer options for a specific question
   const handleAnswerOptionChange = (questionIndex, optionIndex, field, value) => {
     const updatedQuestions = [...questionData.Questions];
     updatedQuestions[questionIndex].answerOptions[optionIndex][field] = value;
     setQuestionData({ ...questionData, Questions: updatedQuestions });
   };
 
-  // Handle changing the 'isCorrect' status of an answer option
   const handleCorrectChange = (questionIndex, optionIndex, isCorrect) => {
     const updatedQuestions = [...questionData.Questions];
     updatedQuestions[questionIndex].answerOptions[optionIndex].isCorrect = isCorrect;
@@ -107,39 +152,34 @@ const AddQuestion = () => {
   };
 
   return (
-    <form
-      onSubmit={handleQuestionSubmit}
-      className="form-section"
-      style={styles.form}
-    >
+    <form onSubmit={handleQuestionSubmit} style={styles.form}>
       <h2 style={styles.heading}>Add Questions</h2>
 
-      {/* Event Selection Dropdown */}
       <label style={styles.label}>Select Event:</label>
       <select
         style={styles.select}
         value={questionData.EventId}
-        onChange={(e) =>
-          setQuestionData({ ...questionData, EventId: e.target.value })
-        }
+        onChange={(e) => {
+          const event = events.find((ev) => ev._id === e.target.value);
+          setSelectedEvent(event);
+          setQuestionData({ ...questionData, EventId: event._id });
+        }}
         required
       >
         <option value="">-- Select Event --</option>
         {events.map((event) => (
           <option key={event._id} value={event._id}>
-            {event.event_name}
+            {event.event_name} ({event.key})
           </option>
         ))}
       </select>
 
-      {/* Loop through questions */}
       {questionData.Questions.map((question, qIndex) => (
         <div key={qIndex}>
-          {/* Question Input */}
           <label style={styles.label}>Question {qIndex + 1}:</label>
           <input
             type="text"
-            placeholder="Enter your question"
+            placeholder="Enter question"
             style={styles.input}
             value={question.questionText}
             onChange={(e) =>
@@ -148,49 +188,68 @@ const AddQuestion = () => {
             required
           />
 
-          {/* Answer Options */}
-          <label style={styles.label}>Answer Options:</label>
-          {question.answerOptions.map((opt, idx) => (
-            <div key={idx} style={styles.optionRow}>
-              <input
-                type="text"
-                placeholder={`Answer ${idx + 1}`}
+          {/* Conditional rendering based on event key */}
+          {selectedEvent?.key === "quiz" ? (
+            <>
+              <label style={styles.label}>Answer Options:</label>
+              {question.answerOptions.map((opt, idx) => (
+                <div key={idx} style={styles.optionRow}>
+                  <input
+                    type="text"
+                    placeholder={`Answer ${idx + 1}`}
+                    style={styles.input}
+                    value={opt.answerText}
+                    onChange={(e) =>
+                      handleAnswerOptionChange(qIndex, idx, "answerText", e.target.value)
+                    }
+                    required
+                  />
+                  <label style={styles.checkboxLabel}>
+                    <input
+                      type="checkbox"
+                      checked={opt.isCorrect}
+                      onChange={(e) =>
+                        handleCorrectChange(qIndex, idx, e.target.checked)
+                      }
+                    />
+                    Correct
+                  </label>
+                </div>
+              ))}
+            </>
+          ) : selectedEvent?.key === "competition" ? (
+            <>
+              <label style={styles.label}>Input (use \\n for new line):</label>
+              <textarea
+                rows="4"
                 style={styles.input}
-                value={opt.answerText}
+                placeholder="Input test case"
+                value={question.input}
                 onChange={(e) =>
-                  handleAnswerOptionChange(
-                    qIndex,
-                    idx,
-                    "answerText",
-                    e.target.value
-                  )
+                  handleQuestionChange(qIndex, "input", e.target.value)
                 }
                 required
               />
-              <label style={styles.checkboxLabel}>
-                <input
-                  type="checkbox"
-                  checked={opt.isCorrect}
-                  onChange={(e) =>
-                    handleCorrectChange(
-                      qIndex,
-                      idx,
-                      e.target.checked
-                    )
-                  }
-                />
-                Correct
-              </label>
-            </div>
-          ))}
+              <label style={styles.label}>Output (use \\n for new line):</label>
+              <textarea
+                rows="4"
+                style={styles.input}
+                placeholder="Expected output"
+                value={question.output}
+                onChange={(e) =>
+                  handleQuestionChange(qIndex, "output", e.target.value)
+                }
+                required
+              />
+            </>
+          ) : null}
 
-          {/* Marks Input */}
           <label style={styles.label}>Marks:</label>
           <input
             type="number"
             min="1"
             max="10"
-            placeholder="Enter marks for this question"
+            placeholder="Enter marks"
             style={styles.input}
             value={question.marks}
             onChange={(e) =>
@@ -201,17 +260,11 @@ const AddQuestion = () => {
         </div>
       ))}
 
-      {/* Button to add more questions */}
-      <button
-        type="button"
-        onClick={handleAddQuestion}
-        style={styles.button}
-      >
+      <button type="button" onClick={handleAddQuestion} style={styles.button}>
         Add Another Question
       </button>
-
       <button type="submit" style={styles.button}>
-        Add Questions
+        Submit Questions
       </button>
     </form>
   );
@@ -219,14 +272,12 @@ const AddQuestion = () => {
 
 export default AddQuestion;
 
-// Simple inline styles
+// Styles
 const styles = {
   form: {
-    width:"800px",
-    maxWidth: "900px",
+    width: "800px",
     margin: "auto",
-    marginTop:"20px",
-    marginBottom:"20px",
+    marginTop: "20px",
     padding: "20px",
     borderRadius: "8px",
     backgroundColor: "#f9f9f9",
@@ -270,7 +321,7 @@ const styles = {
     width: "100%",
     padding: "10px",
     borderRadius: "4px",
-    marginBottom: "10px", // Added margin-bottom to space the button out
+    marginBottom: "10px",
     border: "none",
     backgroundColor: "#4CAF50",
     color: "#fff",

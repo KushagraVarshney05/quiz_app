@@ -88,7 +88,7 @@ const Events = () => {
   };
 
   const handleSecondary = (id) => {
-    if (id === "6568e4b5f061862dc7c8f802") {
+    if (id === "6818eb08ea746972ff13bffa") {
       Navigate(`/compiler`);
     } else {
       Navigate(`/questions/${id}`);

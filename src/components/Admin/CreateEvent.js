@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const CreateEvent = () => {
   const [eventData, setEventData] = useState({
+    key: "quiz", // default selection
     event_name: "",
     event_description: "",
     event_url: "",
@@ -24,6 +25,16 @@ const CreateEvent = () => {
   return (
     <form onSubmit={handleEventSubmit} className="form-section" style={styles.form}>
       <h2 style={styles.heading}>Create Event</h2>
+
+      <label style={styles.label}>Event Type:</label>
+      <select
+        style={styles.input}
+        value={eventData.key}
+        onChange={(e) => setEventData({ ...eventData, key: e.target.value })}
+      >
+        <option value="quiz">Quiz</option>
+        <option value="competition">Competition</option>
+      </select>
 
       <label style={styles.label}>Event Name:</label>
       <input
@@ -55,20 +66,18 @@ const CreateEvent = () => {
         }
       />
 
-      <label style={styles.label}>Start Date (MM/DD/YYYY):</label>
+      <label style={styles.label}>Start Date (YYYY-MM-DD):</label>
       <input
-        type="text"
-        placeholder="Start Date"
+        type="date"
         style={styles.input}
         onChange={(e) =>
           setEventData({ ...eventData, start_date: e.target.value })
         }
       />
 
-      <label style={styles.label}>End Date (MM/DD/YYYY):</label>
+      <label style={styles.label}>End Date (YYYY-MM-DD):</label>
       <input
-        type="text"
-        placeholder="End Date"
+        type="date"
         style={styles.input}
         onChange={(e) =>
           setEventData({ ...eventData, end_date: e.target.value })
@@ -97,10 +106,10 @@ export default CreateEvent;
 // Inline styles
 const styles = {
   form: {
-    width:"800px",
+    width: "800px",
     maxWidth: "900px",
-    marginTop:"20px",
-    marginBottom:"20px",
+    marginTop: "20px",
+    marginBottom: "20px",
     margin: "auto",
     padding: "20px",
     borderRadius: "8px",
