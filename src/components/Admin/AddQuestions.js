@@ -9,7 +9,8 @@ const AddQuestion = () => {
       {
         questionText: "",
         marks: "",
-        answerOptions: [ // only for quiz
+        answerOptions: [
+          // only for quiz
           { answerText: "", isCorrect: false },
           { answerText: "", isCorrect: false },
           { answerText: "", isCorrect: false },
@@ -36,34 +37,34 @@ const AddQuestion = () => {
 
   const handleQuestionSubmit = async (e) => {
     e.preventDefault();
-  
+
     let apiUrl = "";
     let bodyToSend = {};
-  
+
     if (selectedEvent?.key === "quiz") {
       apiUrl = "http://localhost:5000/api/v1/question/quiz";
-  
+
       // Strip out input/output from each question before sending
       const quizQuestions = questionData.Questions.map((q) => ({
         questionText: q.questionText,
         marks: q.marks,
         answerOptions: q.answerOptions,
       }));
-  
+
       bodyToSend = {
         EventId: questionData.EventId,
         Questions: quizQuestions,
       };
     } else if (selectedEvent?.key === "competition") {
       apiUrl = "http://localhost:5000/api/v1/cometition-quetion";
-  
+
       const competitionQuestions = questionData.Questions.map((q) => ({
         question: q.questionText,
         input: q.input,
         output: q.output,
         marks: q.marks,
       }));
-  
+
       bodyToSend = {
         eventId: questionData.EventId,
         questions: competitionQuestions,
@@ -72,16 +73,16 @@ const AddQuestion = () => {
       alert("Invalid event type selected.");
       return;
     }
-  
+
     try {
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyToSend),
       });
-  
+
       const data = await res.json();
-  
+
       if (res.ok) {
         alert("Questions added successfully!");
         setSelectedEvent(null);
@@ -110,7 +111,6 @@ const AddQuestion = () => {
       alert("Something went wrong while submitting questions.");
     }
   };
-  
 
   const handleAddQuestion = () => {
     setQuestionData({
@@ -139,7 +139,12 @@ const AddQuestion = () => {
     setQuestionData({ ...questionData, Questions: updatedQuestions });
   };
 
-  const handleAnswerOptionChange = (questionIndex, optionIndex, field, value) => {
+  const handleAnswerOptionChange = (
+    questionIndex,
+    optionIndex,
+    field,
+    value
+  ) => {
     const updatedQuestions = [...questionData.Questions];
     updatedQuestions[questionIndex].answerOptions[optionIndex][field] = value;
     setQuestionData({ ...questionData, Questions: updatedQuestions });
@@ -147,7 +152,8 @@ const AddQuestion = () => {
 
   const handleCorrectChange = (questionIndex, optionIndex, isCorrect) => {
     const updatedQuestions = [...questionData.Questions];
-    updatedQuestions[questionIndex].answerOptions[optionIndex].isCorrect = isCorrect;
+    updatedQuestions[questionIndex].answerOptions[optionIndex].isCorrect =
+      isCorrect;
     setQuestionData({ ...questionData, Questions: updatedQuestions });
   };
 
@@ -200,7 +206,12 @@ const AddQuestion = () => {
                     style={styles.input}
                     value={opt.answerText}
                     onChange={(e) =>
-                      handleAnswerOptionChange(qIndex, idx, "answerText", e.target.value)
+                      handleAnswerOptionChange(
+                        qIndex,
+                        idx,
+                        "answerText",
+                        e.target.value
+                      )
                     }
                     required
                   />

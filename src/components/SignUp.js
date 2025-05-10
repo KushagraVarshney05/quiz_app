@@ -5,7 +5,7 @@ import emailIcon from "../img/email.svg";
 import passwordIcon from "../img/password.svg";
 import departmentIcon from "../img/structure.png";
 import { HiOutlineMail } from "react-icons/hi";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // Validate
 import { validate } from "./validate";
 // Styles
@@ -39,7 +39,7 @@ const SignUp = () => {
   }, [data]);
 
   const changeHandler = (event) => {
-      setData({ ...data, [event.target.name]: event.target.value });
+    setData({ ...data, [event.target.name]: event.target.value });
   };
 
   const focusHandler = (event) => {
@@ -67,8 +67,8 @@ const SignUp = () => {
         setTouched({});
       })
       .catch((error) => {
-        console.log(error.response.data.msg);
-        notify(error.response.data.msg, "error");
+        console.log(error?.response?.data?.msg);
+        notify(error?.response?.data?.msg, "error");
         setTouched({
           name: true,
           email: true,
@@ -138,19 +138,22 @@ const SignUp = () => {
               autoComplete="off"
             />
             <div className="kush">
-            < i class="fa-solid fa-user" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
+              <i
+                class="fa-solid fa-user"
+                style={{
+                  color: "#4ad0cc",
+                  position: "absolute",
+                  maxWidth: "20px",
+                  maxHeight: "20px",
+                  left: "7px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  WebkitTransform: "translateY(-50%)",
+                  MozTransform: "translateY(-50%)",
+                  msTransform: "translateY(-50%)",
+                  OTransform: "translateY(-50%)",
+                }}
+              ></i>
             </div>
           </div>
           {errors.name && touched.name && (
@@ -176,19 +179,22 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            < i class="fa-solid fa-envelope" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
+            <i
+              class="fa-solid fa-envelope"
+              style={{
+                color: "#4ad0cc",
+                position: "absolute",
+                maxWidth: "20px",
+                maxHeight: "20px",
+                left: "7px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                WebkitTransform: "translateY(-50%)",
+                MozTransform: "translateY(-50%)",
+                msTransform: "translateY(-50%)",
+                OTransform: "translateY(-50%)",
+              }}
+            ></i>
           </div>
           {errors.email && touched.email && (
             <span className={styles.error}>{errors.email}</span>
@@ -213,19 +219,22 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            < i class="fa-solid fa-lock" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
+            <i
+              class="fa-solid fa-lock"
+              style={{
+                color: "#4ad0cc",
+                position: "absolute",
+                maxWidth: "20px",
+                maxHeight: "20px",
+                left: "7px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                WebkitTransform: "translateY(-50%)",
+                MozTransform: "translateY(-50%)",
+                msTransform: "translateY(-50%)",
+                OTransform: "translateY(-50%)",
+              }}
+            ></i>
           </div>
           {errors.password && touched.password && (
             <span className={styles.error}>{errors.password}</span>
@@ -250,19 +259,22 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            < i class="fa-solid fa-book-open" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
+            <i
+              class="fa-solid fa-book-open"
+              style={{
+                color: "#4ad0cc",
+                position: "absolute",
+                maxWidth: "20px",
+                maxHeight: "20px",
+                left: "7px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                WebkitTransform: "translateY(-50%)",
+                MozTransform: "translateY(-50%)",
+                msTransform: "translateY(-50%)",
+                OTransform: "translateY(-50%)",
+              }}
+            ></i>
           </div>
           {errors.course && touched.course && (
             <span className={styles.error}>{errors.course}</span>
@@ -287,19 +299,22 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            < i class="fa-solid fa-graduation-cap" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
+            <i
+              class="fa-solid fa-graduation-cap"
+              style={{
+                color: "#4ad0cc",
+                position: "absolute",
+                maxWidth: "20px",
+                maxHeight: "20px",
+                left: "7px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                WebkitTransform: "translateY(-50%)",
+                MozTransform: "translateY(-50%)",
+                msTransform: "translateY(-50%)",
+                OTransform: "translateY(-50%)",
+              }}
+            ></i>
           </div>
           {errors.collegeId && touched.collegeId && (
             <span className={styles.error}>{errors.collegeId}</span>
@@ -324,100 +339,111 @@ const SignUp = () => {
               onFocus={focusHandler}
               autoComplete="off"
             />
-            < i class="fa-solid fa-id-card" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
+            <i
+              class="fa-solid fa-id-card"
+              style={{
+                color: "#4ad0cc",
+                position: "absolute",
+                maxWidth: "20px",
+                maxHeight: "20px",
+                left: "7px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                WebkitTransform: "translateY(-50%)",
+                MozTransform: "translateY(-50%)",
+                msTransform: "translateY(-50%)",
+                OTransform: "translateY(-50%)",
+              }}
+            ></i>
           </div>
           {errors.universityRollno && touched.universityRollno && (
             <span className={styles.error}>{errors.universityRollno}</span>
           )}
         </div>
-            
-            <div>
-              <div
-                className={
-                  errors.department && touched.department
-                    ? styles.unCompleted
-                    : !errors.department && touched.department
-                    ? styles.completed
-                    : undefined
-                }
-              >
-                <input
-                  type="text"
-                  name="department"
-                  value={data.department}
-                  placeholder="Department"
-                  onChange={changeHandler}
-                  onFocus={focusHandler}
-                  autoComplete="off"
-                />
-                <i i class="fa-solid fa-building-user" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
-              </div>
-              {errors.department && touched.department && (
-                <span className={styles.error}>{errors.department}</span>
-              )}
-            </div>
-            <div>
-              <div
-                className={
-                  errors.year && touched.year
-                    ? styles.unCompleted
-                    : !errors.year && touched.year
-                    ? styles.completed
-                    : undefined
-                }
-              >
-                <input
-                  type="text"
-                  name="year"
-                  value={data.year}
-                  placeholder="year"
-                  onChange={changeHandler}
-                  onFocus={focusHandler}
-                  autoComplete="off"
-                />
-                <i i class="fa-solid fa-building-user" style={{
-              color:"#4ad0cc" ,
-              position: "absolute",
-              maxWidth: "20px",
-              maxHeight: "20px",
-              left: "7px",
-              top: "50%",
-              transform: "translateY(-50%)",
-              WebkitTransform: "translateY(-50%)",
-              MozTransform: "translateY(-50%)",
-              msTransform: "translateY(-50%)",
-              OTransform: "translateY(-50%)"
-            }}></i>
-              </div>
-              {errors.year && touched.year && (
-                <span className={styles.error}>{errors.year}</span>
-              )}
-            </div>
-        
+
+        <div>
+          <div
+            className={
+              errors.department && touched.department
+                ? styles.unCompleted
+                : !errors.department && touched.department
+                ? styles.completed
+                : undefined
+            }
+          >
+            <input
+              type="text"
+              name="department"
+              value={data.department}
+              placeholder="Department"
+              onChange={changeHandler}
+              onFocus={focusHandler}
+              autoComplete="off"
+            />
+            <i
+              i
+              class="fa-solid fa-building-user"
+              style={{
+                color: "#4ad0cc",
+                position: "absolute",
+                maxWidth: "20px",
+                maxHeight: "20px",
+                left: "7px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                WebkitTransform: "translateY(-50%)",
+                MozTransform: "translateY(-50%)",
+                msTransform: "translateY(-50%)",
+                OTransform: "translateY(-50%)",
+              }}
+            ></i>
+          </div>
+          {errors.department && touched.department && (
+            <span className={styles.error}>{errors.department}</span>
+          )}
+        </div>
+        <div>
+          <div
+            className={
+              errors.year && touched.year
+                ? styles.unCompleted
+                : !errors.year && touched.year
+                ? styles.completed
+                : undefined
+            }
+          >
+            <input
+              type="text"
+              name="year"
+              value={data.year}
+              placeholder="year"
+              onChange={changeHandler}
+              onFocus={focusHandler}
+              autoComplete="off"
+            />
+            <i
+              i
+              class="fa-solid fa-building-user"
+              style={{
+                color: "#4ad0cc",
+                position: "absolute",
+                maxWidth: "20px",
+                maxHeight: "20px",
+                left: "7px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                WebkitTransform: "translateY(-50%)",
+                MozTransform: "translateY(-50%)",
+                msTransform: "translateY(-50%)",
+                OTransform: "translateY(-50%)",
+              }}
+            ></i>
+          </div>
+          {errors.year && touched.year && (
+            <span className={styles.error}>{errors.year}</span>
+          )}
+        </div>
+
         {/* <div>
           <div className={styles.terms}>
             <input

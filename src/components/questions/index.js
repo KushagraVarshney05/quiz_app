@@ -49,8 +49,7 @@ export default function App() {
       notify("You are right", "success");
       updatedScore = updatedScore + 1;
       setScore(score + 1);
-    }
-    else{
+    } else {
       notify("You are wrong", "error");
     }
 

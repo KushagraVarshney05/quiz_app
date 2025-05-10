@@ -13,17 +13,23 @@ const CreateEvent = () => {
 
   const handleEventSubmit = async (e) => {
     e.preventDefault();
+    console.log(eventData);
     const res = await fetch("http://localhost:5000/api/v1/admin/event", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(eventData),
     });
     const data = await res.json();
-    alert("Event created: " + JSON.stringify(data));
+
+    window.location.reload();
   };
 
   return (
-    <form onSubmit={handleEventSubmit} className="form-section" style={styles.form}>
+    <form
+      onSubmit={handleEventSubmit}
+      className="form-section"
+      style={styles.form}
+    >
       <h2 style={styles.heading}>Create Event</h2>
 
       <label style={styles.label}>Event Type:</label>

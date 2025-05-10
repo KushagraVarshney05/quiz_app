@@ -21,7 +21,6 @@ const ViewResults = () => {
 
   const handleResultFetch = async () => {
     try {
-      alert(resultEventId);
       const res = await fetch("http://localhost:5000/api/v1/result/all", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -103,11 +102,11 @@ export default ViewResults;
 // Styles
 const styles = {
   form: {
-    width:"800px",
+    width: "800px",
     maxWidth: "900px",
     margin: "auto",
-    marginTop:"20px",
-    marginBottom:"20px",
+    marginTop: "20px",
+    marginBottom: "20px",
     padding: "20px",
     borderRadius: "8px",
     backgroundColor: "#f9f9f9",
