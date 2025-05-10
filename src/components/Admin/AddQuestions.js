@@ -55,7 +55,7 @@ const AddQuestion = () => {
         Questions: quizQuestions,
       };
     } else if (selectedEvent?.key === "competition") {
-      apiUrl = "http://localhost:5000/api/v1/cometition-quetion";
+      apiUrl = "http://localhost:5000/api/v1/cometition-question";
   
       const competitionQuestions = questionData.Questions.map((q) => ({
         question: q.questionText,
