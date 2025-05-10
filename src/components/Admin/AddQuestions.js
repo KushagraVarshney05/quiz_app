@@ -42,7 +42,7 @@ const AddQuestion = () => {
     let bodyToSend = {};
 
     if (selectedEvent?.key === "quiz") {
-      apiUrl = "http://localhost:5000/api/v1/question/quiz";
+      apiUrl = "http://localhost:5000/api/v1/question";
 
       // Strip out input/output from each question before sending
       const quizQuestions = questionData.Questions.map((q) => ({
@@ -56,8 +56,7 @@ const AddQuestion = () => {
         Questions: quizQuestions,
       };
     } else if (selectedEvent?.key === "competition") {
-      apiUrl = "http://localhost:5000/api/v1/cometition-quetion";
-
+      apiUrl = "http://localhost:5000/api/v1/cometition-question";
       const competitionQuestions = questionData.Questions.map((q) => ({
         question: q.questionText,
         input: q.input,

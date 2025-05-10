@@ -12,6 +12,7 @@ const ViewResults = () => {
         const res = await fetch("http://localhost:5000/api/v1/admin/event/all");
         const data = await res.json();
         setEvents(data.events);
+        console.log(data.events);
       } catch (err) {
         console.error("Error fetching events:", err);
       }
